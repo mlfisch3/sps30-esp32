@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Clear-sky blue, against the Pi build's teal: the two apps sit next to
+         each other on the launcher and have to be distinguishable at a glance.
+         Deliberately hue 210 - azure, not navy (too dark for the white marks)
+         and not cyan (too near the Pi build's #0B7285). -->
+    <color name="ic_launcher_background">#227AD3</color>
+</resources>

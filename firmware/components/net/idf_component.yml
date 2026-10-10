@@ -1,0 +1,15 @@
+# mDNS is not part of ESP-IDF v5.3. It used to be `components/mdns` in the IDF
+# tree; Espressif moved it to the component registry, so it arrives here instead
+# of being assumed present - which is why this file exists at all and why it is
+# on `net` rather than on `main`: `net_mdns.c` is the only translation unit that
+# includes `mdns.h`.
+#
+# The range is deliberate. `^1.11.3` takes patch and minor updates of the 1.x
+# line - which is where the fuzzer fixes in 1.11.1-1.11.3 came from, and this is
+# a component that parses attacker-supplied packets off a multicast socket - and
+# refuses a 2.0 that could rename the API. `idf.py` records the version actually
+# resolved in `dependencies.lock`, which is gitignored along with
+# `managed_components/`, so a build is reproducible on a machine and refreshed
+# between them.
+dependencies:
+  espressif/mdns: "^1.11.3"

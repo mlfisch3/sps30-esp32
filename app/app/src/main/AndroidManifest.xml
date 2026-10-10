@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Required to *use* a specific network (requestNetwork + its SocketFactory)
+         rather than merely observe one. Without it binding fails with EPERM and
+         traffic silently follows the default route - which a full-tunnel VPN
+         owns, defeating the point. -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- `connectedDevice`, not `dataSync`. The service holds a live link to the
+         controller and streams from it for as long as the user leaves monitoring
+         on, which is Play's "Continuous Data Transfer to an External Device";
+         `dataSync`'s approved uses are all finite, user-initiated transfers
+         (backup, restore, upload, download, import, export). The system's
+         prerequisite for this type is met by CHANGE_NETWORK_STATE above (a
+         normal permission, so it is held from install and does not depend on a
+         runtime grant); the BLUETOOTH_* requests below satisfy it too. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- An alert rule may ask for a buzz (AlertNotifier.vibrate). Vibrator.vibrate
+         throws SecurityException without this, so the reaction the user switched
+         on was taking the notifier down instead of running. Normal permission,
+         granted at install, no prompt. -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Bluetooth LE (direct connection when no Wi-Fi is available). -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- Legacy (API <= 30): the old BT perms + location (BLE scan needed it then). -->
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="false" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.SPS30">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.SPS30">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".service.Sps30Service"
+            android:exported="false"
+            android:foregroundServiceType="connectedDevice" />
+    </application>
+</manifest>

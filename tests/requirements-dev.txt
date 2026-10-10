@@ -1,0 +1,17 @@
+# Everything the Python test pack needs in order to actually run.
+#
+#   python3 -m pip install -r requirements-dev.txt
+#
+# Keep in step with tools/check_test_deps.py, which is what ./run_tests.sh
+# checks before it starts and which records what each one is for. These two
+# lists drifting apart is how this file came to be short of textual and
+# textual-plotext - six GUI tests then skipped themselves on a machine that did
+# not have them, while the pack printed a green "260 passed" and the truth was
+# 266.
+#
+# The firmware and Kotlin packs have prerequisites of their own; README section
+# 7.1 lists all three in one place.
+pyserial>=3.5
+pytest>=7.4
+textual>=0.50
+textual-plotext>=0.2

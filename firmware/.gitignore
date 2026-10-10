@@ -1,0 +1,15 @@
+# ESP-IDF build output and the generated, machine-specific configuration.
+build/
+sdkconfig
+sdkconfig.old
+managed_components/
+dependencies.lock
+
+# The Wi-Fi credentials header, generated at configure time from files outside
+# the repository (see cmake/wifi_credentials.cmake). It is written into build/,
+# which the line above already excludes; named here as well so that it stays
+# ignored wherever it is generated. No credential belongs in this repository.
+wifi_credentials.h
+
+# Host test binaries.
+test/build/

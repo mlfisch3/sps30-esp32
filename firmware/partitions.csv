@@ -1,0 +1,16 @@
+# Partition table for the SPS30 controller.
+#
+# The board is an ESP32-D0WD-V3 with 4 MB of flash, measured with
+# `esptool.py flash_id`, not assumed. The build was configured for 2 MB and used
+# the default single-app table, which reaches 0x110000 and leaves nearly three
+# quarters of the part unaddressed. That is why the firmware had nowhere to put
+# readings.
+#
+# factory is 1.5 MB against an 824 KB image: headroom for NimBLE, which is large
+# and is coming on another branch. Everything left over is the store.
+#
+# Name,     Type, SubType,  Offset,   Size,     Flags
+nvs,        data, nvs,      0x9000,   0x6000,
+phy_init,   data, phy,      0xf000,   0x1000,
+factory,    app,  factory,  0x10000,  0x180000,
+store,      data, undefined,0x190000, 0x270000,

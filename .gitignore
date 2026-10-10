@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.venv/
+venv/
+
+# Android / Gradle
+app/.gradle/
+app/build/
+app/*/build/
+app/local.properties
+app/captures/
+*.iml
+.idea/
+
+# ESP-IDF
+firmware/build/
+firmware/sdkconfig
+firmware/sdkconfig.old
+firmware/*/build/
+firmware/managed_components/
+firmware/dependencies.lock
+
+# Editor / OS
+.DS_Store
+*.swp

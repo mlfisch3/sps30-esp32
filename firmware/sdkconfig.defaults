@@ -1,0 +1,121 @@
+# Defaults for the SPS30 controller firmware.
+#
+# Kept deliberately small and chip-agnostic: an ESP32-C6 replaces the
+# WROOM-32E later, and anything set here has to remain true on both.
+
+# The SHDLC frame buffers are static rather than stack-allocated, but the
+# default 3584 bytes leaves little headroom once logging is in the picture.
+CONFIG_ESP_MAIN_TASK_STACK_SIZE=4096
+
+# The sensor is on UART2; the console stays on UART0 so that flashing and
+# logging remain independent of it.
+CONFIG_ESP_CONSOLE_UART_DEFAULT=y
+
+# Info-level logging: the milestone is a log line, so it has to be visible.
+CONFIG_LOG_DEFAULT_LEVEL_INFO=y
+
+# Sockets. The default is 10, and the protocol needs the listener plus
+# WIRE_MAX_CLIENTS = 8 clients, which leaves one for SNTP and nothing for a
+# client whose socket is still in TIME_WAIT when its replacement dials in.
+# 16 is the documented ceiling and the divisor the queue arithmetic in
+# acq_queue.h assumes; raising the client cap instead would invalidate it.
+CONFIG_LWIP_MAX_SOCKETS=16
+
+# lwIP's own SNTP is not used - esp_sntp drives it - but the DHCP-supplied
+# server is worth having: it is usually the router, which answers fastest and
+# works on a LAN with no route to the internet.
+CONFIG_LWIP_DHCP_GET_NTP_SRV=y
+
+# --- mDNS -----------------------------------------------------------------
+# The responder that lets the app find this board by listening rather than by
+# probing every address on the subnet. See components/net/net_mdns.h.
+#
+# Every line here narrows the component to what this board actually is, because
+# its defaults describe a general-purpose device and each of them costs RAM the
+# client slots are also asking for.
+
+# One service: the protocol server. The default is ten.
+CONFIG_MDNS_MAX_SERVICES=1
+
+# One instance of it. There is exactly one thing being advertised and it is not
+# an instance of a set.
+CONFIG_MDNS_MULTIPLE_INSTANCE=n
+
+# Station only. This firmware never runs an access point and has no Ethernet,
+# and both of those interfaces are predefined by default; the component counts
+# its predefined interfaces against MAX_INTERFACES and emits a `#warning` and
+# silently raises the limit if there are more of them than the max allows.
+CONFIG_MDNS_PREDEF_NETIF_AP=n
+CONFIG_MDNS_PREDEF_NETIF_ETH=n
+
+# Two, not one, even though this board has exactly one interface.
+#
+# Kconfig accepts 1 and the component does not survive it: with
+# MDNS_MAX_INTERFACES 1, `mdns_priv_pcb_check_for_duplicates` in mdns_pcb.c
+# declares `mdns_if_t ifaces[MDNS_MAX_INTERFACES]`, initialises it with two
+# values and then indexes `ifaces[1]` - a one-past-the-end read on every call,
+# in the packet path, reported by the compiler as `excess elements in array
+# initializer` and by nothing else. Two is the smallest value that file's own
+# code is written for. Checked against espressif/mdns 1.11.3; worth re-reading
+# if the pin in idf_component.yml moves.
+CONFIG_MDNS_MAX_INTERFACES=2
+
+# No console command line. The component ships one for interactive poking; this
+# board's console is a log, and leaving it out keeps the CLI's parser and its
+# argtable strings out of the image.
+CONFIG_MDNS_ENABLE_CONSOLE_CLI=n
+
+# No reverse lookups. Nothing asks this board what name an address has, and
+# answering `in-addr.arpa` queries is one more parser exposed to the LAN.
+CONFIG_MDNS_RESPOND_REVERSE_QUERIES=n
+
+# The board is a 4 MB part (esptool.py flash_id: ESP32-D0WD-V3, 4MB). The build
+# was configured for 2 MB and used the default single-app table, which reaches
+# 0x110000 and left nearly three quarters of the flash unaddressed - which is
+# why there was nowhere to put readings. partitions.csv claims the rest.
+# The same 4 MB and the same 1.5 MB factory partition are what let NimBLE fit;
+# Wi-Fi and BLE together do not go in the default 1 MB.
+CONFIG_ESPTOOLPY_FLASHSIZE_4MB=y
+CONFIG_PARTITION_TABLE_CUSTOM=y
+CONFIG_PARTITION_TABLE_CUSTOM_FILENAME="partitions.csv"
+
+# --- Bluetooth Low Energy -------------------------------------------------
+# The Nordic UART Service carrying the same JSONL the TCP server sends, so the
+# app works with no Wi-Fi network at all. See components/ble and
+# BLUETOOTH_DESIGN.md.
+
+# BLE only. The ESP32 has Classic Bluetooth as well, but the protocol was
+# chosen to be BLE precisely so it survives the move to a part that has no
+# Classic radio, and turning Classic off returns its controller memory to the
+# heap.
+CONFIG_BT_ENABLED=y
+CONFIG_BTDM_CTRL_MODE_BLE_ONLY=y
+CONFIG_BTDM_CTRL_MODE_BR_EDR_ONLY=n
+CONFIG_BTDM_CTRL_MODE_BTDM=n
+
+# NimBLE rather than Bluedroid: about 100 KB smaller and the peripheral-only
+# API is the one this firmware needs.
+CONFIG_BT_NIMBLE_ENABLED=y
+
+# Peripheral and broadcaster only. Nothing here scans or connects outward, and
+# leaving the central role out of the image saves flash and RAM.
+CONFIG_BT_NIMBLE_ROLE_CENTRAL=n
+CONFIG_BT_NIMBLE_ROLE_OBSERVER=n
+
+# Must equal BLE_NUS_MAX_LINKS in components/ble/include/ble_nus.h, which
+# explains the number.
+CONFIG_BT_NIMBLE_MAX_CONNECTIONS=1
+CONFIG_BTDM_CTRL_BLE_MAX_CONN=1
+
+# The app asks for 247, which makes a reading one notification instead of
+# thirteen. Answering with less would silently keep the 23-byte default.
+CONFIG_BT_NIMBLE_ATT_PREFERRED_MTU=247
+
+# No pairing, no bonding, so nothing to persist: the link is unauthenticated at
+# the app layer exactly as the LAN daemon is, which BLUETOOTH_DESIGN.md
+# documents as the accepted posture for a trusted personal device.
+CONFIG_BT_NIMBLE_NVS_PERSIST=n
+
+# The stack's own logging is not this firmware's log. Warnings and above only,
+# so a connection does not bury the acquisition lines.
+CONFIG_BT_NIMBLE_LOG_LEVEL_WARNING=y

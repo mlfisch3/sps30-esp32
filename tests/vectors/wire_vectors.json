@@ -1,0 +1,1511 @@
+{
+  "meta": {
+    "source": "wire.py",
+    "generator": "tools/gen_wire_vectors_json.py",
+    "regenerate": "python3 tools/gen_wire_vectors_json.py",
+    "freshness": "tests/test_wire_vectors_json.py regenerates and compares byte for byte",
+    "encoding": {
+      "line": "an exact JSONL frame as wire.py emits it, trailing newline included",
+      "values_hex": "big-endian IEEE-754 binary32 bit pattern, 8 hex digits",
+      "non_finite": "inputs JSON cannot carry as numbers are the strings \"NaN\", \"Infinity\", \"-Infinity\"",
+      "states": "per-page storage states as a digit string, one page per character"
+    }
+  },
+  "constants": {
+    "default_port": 8730,
+    "index_width": 7,
+    "max_clients": 8,
+    "max_clients_tcp": 8,
+    "max_clients_ble": 1,
+    "control_ttl_seconds": 120.0,
+    "backup_chunk_bytes": 262144,
+    "store_warn_fraction": 0.85,
+    "clean_after_seconds": 604800.0,
+    "min_firmware_for_sleep": [
+      2,
+      0
+    ],
+    "interval_max_s": 3600.0,
+    "cycle_max_s": 86400.0,
+    "warmup_max_s": 300.0,
+    "average_max_s": 300.0,
+    "warmup_min_s": 8.0,
+    "error_ref_none": "",
+    "alert_auto_default": true,
+    "alert_default_thresholds": {
+      "pm2_5": 20.0
+    }
+  },
+  "messages": {
+    "hello": "hello",
+    "reading": "reading",
+    "state": "state",
+    "raw_response": "raw_response",
+    "file_list": "file_list",
+    "file_data": "file_data",
+    "error": "error",
+    "profile": "profile",
+    "power": "power",
+    "control": "control",
+    "backup_meta": "backup_meta",
+    "backup_chunk": "backup_chunk",
+    "clients": "clients",
+    "time_map": "time_map",
+    "storage": "storage",
+    "import_result": "import_result",
+    "erase_result": "erase_result",
+    "storage_map": "storage_map",
+    "alerts": "alerts",
+    "alert_segment": "alert_segment",
+    "alert_data": "alert_data",
+    "drain_state": "drain_state",
+    "drain_data": "drain_data",
+    "power_estimate": "power_estimate"
+  },
+  "commands": {
+    "pause": "pause",
+    "resume": "resume",
+    "clean": "clean",
+    "restart": "restart",
+    "raw": "raw",
+    "list_files": "list_files",
+    "get_file": "get_file",
+    "set_profile": "set_profile",
+    "shutdown": "shutdown",
+    "identify": "identify",
+    "claim": "claim",
+    "release": "release",
+    "backup": "backup",
+    "set_time": "set_time",
+    "put_file": "put_file",
+    "erase": "erase",
+    "storage": "storage",
+    "storage_map": "storage_map",
+    "get_alerts": "get_alerts",
+    "set_alerts": "set_alerts",
+    "get_power_estimate": "get_power_estimate",
+    "drain_begin": "drain_begin",
+    "drain_next": "drain_next",
+    "drain_confirm": "drain_confirm",
+    "drain_cancel": "drain_cancel"
+  },
+  "controller_only_commands": [
+    "drain_begin",
+    "drain_cancel",
+    "drain_confirm",
+    "drain_next",
+    "erase",
+    "get_alerts",
+    "get_power_estimate",
+    "put_file",
+    "set_alerts",
+    "storage",
+    "storage_map"
+  ],
+  "mutating_commands": [
+    "clean",
+    "pause",
+    "raw",
+    "restart",
+    "resume",
+    "set_profile",
+    "shutdown"
+  ],
+  "states": {
+    "checking": "checking",
+    "measuring": "measuring",
+    "paused": "paused",
+    "cleaning": "cleaning",
+    "sleeping": "sleeping",
+    "warmup": "warmup",
+    "shutting_down": "shutting_down"
+  },
+  "modes": {
+    "continuous": "continuous",
+    "duty_cycle": "duty_cycle"
+  },
+  "transports": {
+    "tcp": "tcp",
+    "ble": "ble"
+  },
+  "hello_flags": {
+    "supports_sleep": "supports_sleep",
+    "can_power_off": "can_power_off",
+    "has_clock": "has_clock",
+    "absent_means": true
+  },
+  "time_sources": {
+    "measured": "measured",
+    "derived": "derived",
+    "unanchored": "unanchored",
+    "manual": "manual",
+    "column": "time_source"
+  },
+  "power": {
+    "clean_due_hours_key": "clean_due_in_hours",
+    "basis_modelled": "modelled",
+    "runtime_statuses": [
+      "ok",
+      "no_capacity",
+      "unusable_capacity",
+      "no_draw"
+    ],
+    "subsystems": [
+      "sensor",
+      "controller",
+      "radio",
+      "storage"
+    ],
+    "compare_cycles_s": [
+      300.0,
+      900.0,
+      1800.0,
+      3600.0,
+      43200.0,
+      86400.0
+    ]
+  },
+  "mdns": {
+    "service": "_sensorq",
+    "proto": "_tcp",
+    "service_type": "_sensorq._tcp",
+    "hostname": "sps30",
+    "instance": "SENSORQ",
+    "txt_version_key": "txtvers",
+    "txt_protocol_key": "proto",
+    "txt": [
+      [
+        "txtvers",
+        "1"
+      ],
+      [
+        "proto",
+        "1"
+      ]
+    ]
+  },
+  "columns": {
+    "fields": [
+      "pm1_0",
+      "pm2_5",
+      "pm4_0",
+      "pm10",
+      "nc0_5",
+      "nc1_0",
+      "nc2_5",
+      "nc4_0",
+      "nc10",
+      "typical_size"
+    ],
+    "csv": [
+      "index",
+      "timestamp",
+      "pm1_0",
+      "pm2_5",
+      "pm4_0",
+      "pm10",
+      "nc0_5",
+      "nc1_0",
+      "nc2_5",
+      "nc4_0",
+      "nc10",
+      "typical_size",
+      "event"
+    ],
+    "csv_relative": [
+      "index",
+      "timestamp",
+      "pm1_0",
+      "pm2_5",
+      "pm4_0",
+      "pm10",
+      "nc0_5",
+      "nc1_0",
+      "nc2_5",
+      "nc4_0",
+      "nc10",
+      "typical_size",
+      "event",
+      "rel_boot",
+      "rel_ms"
+    ],
+    "rel_boot": "rel_boot",
+    "rel_ms": "rel_ms",
+    "drain_reading": [
+      "session",
+      "index",
+      "timestamp",
+      "pm1_0",
+      "pm2_5",
+      "pm4_0",
+      "pm10",
+      "nc0_5",
+      "nc1_0",
+      "nc2_5",
+      "nc4_0",
+      "nc10",
+      "typical_size",
+      "event",
+      "rel_boot",
+      "rel_ms"
+    ],
+    "drain_segment": [
+      "seq",
+      "session",
+      "field",
+      "threshold",
+      "start_s",
+      "stop_s",
+      "first",
+      "last",
+      "midpoint",
+      "mean",
+      "variance",
+      "minimum",
+      "maximum",
+      "points",
+      "first_index",
+      "last_index",
+      "wrap",
+      "has_body"
+    ],
+    "alert_segment_keys": [
+      "seq",
+      "session",
+      "field",
+      "threshold",
+      "start",
+      "stop",
+      "first",
+      "last",
+      "midpoint",
+      "mean",
+      "variance",
+      "minimum",
+      "maximum",
+      "points",
+      "first_index",
+      "last_index",
+      "wrap",
+      "has_body"
+    ]
+  },
+  "file_list_keys": {
+    "offset": "offset",
+    "total": "total",
+    "next": "next"
+  },
+  "readings": [
+    {
+      "name": "clean air / 2026-01-15T09:30:00-05:00",
+      "csv": "SPS30-20260115_093000.csv",
+      "index": 1,
+      "index_text": "0000001",
+      "timestamp": "2026-01-15T09:30:00-05:00",
+      "event": "",
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "values_hex": [
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260115_093000.csv\",\"index\":\"0000001\",\"timestamp\":\"2026-01-15T09:30:00-05:00\",\"pm1_0\":0.0,\"pm2_5\":0.0,\"pm4_0\":0.0,\"pm10\":0.0,\"nc0_5\":0.0,\"nc1_0\":0.0,\"nc2_5\":0.0,\"nc4_0\":0.0,\"nc10\":0.0,\"typical_size\":0.0,\"event\":\"\"}\n"
+    },
+    {
+      "name": "clean air / 2026-08-01T15:45:12-04:00",
+      "csv": "SPS30-20260801_154512.csv",
+      "index": 2,
+      "index_text": "0000002",
+      "timestamp": "2026-08-01T15:45:12-04:00",
+      "event": "settling",
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "values_hex": [
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260801_154512.csv\",\"index\":\"0000002\",\"timestamp\":\"2026-08-01T15:45:12-04:00\",\"pm1_0\":0.0,\"pm2_5\":0.0,\"pm4_0\":0.0,\"pm10\":0.0,\"nc0_5\":0.0,\"nc1_0\":0.0,\"nc2_5\":0.0,\"nc4_0\":0.0,\"nc10\":0.0,\"typical_size\":0.0,\"event\":\"settling\"}\n"
+    },
+    {
+      "name": "clean air / 2026-03-08T01:00:00-05:00",
+      "csv": "SPS30-20260308_010000.csv",
+      "index": 3,
+      "index_text": "0000003",
+      "timestamp": "2026-03-08T01:00:00-05:00",
+      "event": "startup",
+      "values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "values_hex": [
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000",
+        "00000000"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260308_010000.csv\",\"index\":\"0000003\",\"timestamp\":\"2026-03-08T01:00:00-05:00\",\"pm1_0\":0.0,\"pm2_5\":0.0,\"pm4_0\":0.0,\"pm10\":0.0,\"nc0_5\":0.0,\"nc1_0\":0.0,\"nc2_5\":0.0,\"nc4_0\":0.0,\"nc10\":0.0,\"typical_size\":0.0,\"event\":\"startup\"}\n"
+    },
+    {
+      "name": "plausible indoor / 2026-01-15T09:30:00-05:00",
+      "csv": "SPS30-20260115_093000.csv",
+      "index": 7920,
+      "index_text": "0007920",
+      "timestamp": "2026-01-15T09:30:00-05:00",
+      "event": "settling",
+      "values": [
+        1.6200000047683716,
+        1.909999966621399,
+        2.0299999713897705,
+        2.109999895095825,
+        10.9399995803833,
+        12.850000381469727,
+        13.109999656677246,
+        13.15999984741211,
+        13.170000076293945,
+        0.6299999952316284
+      ],
+      "values_hex": [
+        "3fcf5c29",
+        "3ff47ae1",
+        "4001eb85",
+        "40070a3d",
+        "412f0a3d",
+        "414d999a",
+        "4151c28f",
+        "41528f5c",
+        "4152b852",
+        "3f2147ae"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260115_093000.csv\",\"index\":\"0007920\",\"timestamp\":\"2026-01-15T09:30:00-05:00\",\"pm1_0\":1.6200000047683716,\"pm2_5\":1.909999966621399,\"pm4_0\":2.0299999713897705,\"pm10\":2.109999895095825,\"nc0_5\":10.9399995803833,\"nc1_0\":12.850000381469727,\"nc2_5\":13.109999656677246,\"nc4_0\":13.15999984741211,\"nc10\":13.170000076293945,\"typical_size\":0.6299999952316284,\"event\":\"settling\"}\n"
+    },
+    {
+      "name": "plausible indoor / 2026-08-01T15:45:12-04:00",
+      "csv": "SPS30-20260801_154512.csv",
+      "index": 7921,
+      "index_text": "0007921",
+      "timestamp": "2026-08-01T15:45:12-04:00",
+      "event": "startup",
+      "values": [
+        1.6200000047683716,
+        1.909999966621399,
+        2.0299999713897705,
+        2.109999895095825,
+        10.9399995803833,
+        12.850000381469727,
+        13.109999656677246,
+        13.15999984741211,
+        13.170000076293945,
+        0.6299999952316284
+      ],
+      "values_hex": [
+        "3fcf5c29",
+        "3ff47ae1",
+        "4001eb85",
+        "40070a3d",
+        "412f0a3d",
+        "414d999a",
+        "4151c28f",
+        "41528f5c",
+        "4152b852",
+        "3f2147ae"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260801_154512.csv\",\"index\":\"0007921\",\"timestamp\":\"2026-08-01T15:45:12-04:00\",\"pm1_0\":1.6200000047683716,\"pm2_5\":1.909999966621399,\"pm4_0\":2.0299999713897705,\"pm10\":2.109999895095825,\"nc0_5\":10.9399995803833,\"nc1_0\":12.850000381469727,\"nc2_5\":13.109999656677246,\"nc4_0\":13.15999984741211,\"nc10\":13.170000076293945,\"typical_size\":0.6299999952316284,\"event\":\"startup\"}\n"
+    },
+    {
+      "name": "plausible indoor / 2026-03-08T01:00:00-05:00",
+      "csv": "SPS30-20260308_010000.csv",
+      "index": 7922,
+      "index_text": "0007922",
+      "timestamp": "2026-03-08T01:00:00-05:00",
+      "event": "",
+      "values": [
+        1.6200000047683716,
+        1.909999966621399,
+        2.0299999713897705,
+        2.109999895095825,
+        10.9399995803833,
+        12.850000381469727,
+        13.109999656677246,
+        13.15999984741211,
+        13.170000076293945,
+        0.6299999952316284
+      ],
+      "values_hex": [
+        "3fcf5c29",
+        "3ff47ae1",
+        "4001eb85",
+        "40070a3d",
+        "412f0a3d",
+        "414d999a",
+        "4151c28f",
+        "41528f5c",
+        "4152b852",
+        "3f2147ae"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260308_010000.csv\",\"index\":\"0007922\",\"timestamp\":\"2026-03-08T01:00:00-05:00\",\"pm1_0\":1.6200000047683716,\"pm2_5\":1.909999966621399,\"pm4_0\":2.0299999713897705,\"pm10\":2.109999895095825,\"nc0_5\":10.9399995803833,\"nc1_0\":12.850000381469727,\"nc2_5\":13.109999656677246,\"nc4_0\":13.15999984741211,\"nc10\":13.170000076293945,\"typical_size\":0.6299999952316284,\"event\":\"\"}\n"
+    },
+    {
+      "name": "datasheet full scale / 2026-01-15T09:30:00-05:00",
+      "csv": "SPS30-20260115_093000.csv",
+      "index": 15839,
+      "index_text": "0015839",
+      "timestamp": "2026-01-15T09:30:00-05:00",
+      "event": "startup",
+      "values": [
+        1000.0,
+        1000.0,
+        1000.0,
+        1000.0,
+        3000.0,
+        3000.0,
+        3000.0,
+        3000.0,
+        3000.0,
+        10.0
+      ],
+      "values_hex": [
+        "447a0000",
+        "447a0000",
+        "447a0000",
+        "447a0000",
+        "453b8000",
+        "453b8000",
+        "453b8000",
+        "453b8000",
+        "453b8000",
+        "41200000"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260115_093000.csv\",\"index\":\"0015839\",\"timestamp\":\"2026-01-15T09:30:00-05:00\",\"pm1_0\":1000.0,\"pm2_5\":1000.0,\"pm4_0\":1000.0,\"pm10\":1000.0,\"nc0_5\":3000.0,\"nc1_0\":3000.0,\"nc2_5\":3000.0,\"nc4_0\":3000.0,\"nc10\":3000.0,\"typical_size\":10.0,\"event\":\"startup\"}\n"
+    },
+    {
+      "name": "datasheet full scale / 2026-08-01T15:45:12-04:00",
+      "csv": "SPS30-20260801_154512.csv",
+      "index": 15840,
+      "index_text": "0015840",
+      "timestamp": "2026-08-01T15:45:12-04:00",
+      "event": "",
+      "values": [
+        1000.0,
+        1000.0,
+        1000.0,
+        1000.0,
+        3000.0,
+        3000.0,
+        3000.0,
+        3000.0,
+        3000.0,
+        10.0
+      ],
+      "values_hex": [
+        "447a0000",
+        "447a0000",
+        "447a0000",
+        "447a0000",
+        "453b8000",
+        "453b8000",
+        "453b8000",
+        "453b8000",
+        "453b8000",
+        "41200000"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260801_154512.csv\",\"index\":\"0015840\",\"timestamp\":\"2026-08-01T15:45:12-04:00\",\"pm1_0\":1000.0,\"pm2_5\":1000.0,\"pm4_0\":1000.0,\"pm10\":1000.0,\"nc0_5\":3000.0,\"nc1_0\":3000.0,\"nc2_5\":3000.0,\"nc4_0\":3000.0,\"nc10\":3000.0,\"typical_size\":10.0,\"event\":\"\"}\n"
+    },
+    {
+      "name": "datasheet full scale / 2026-03-08T01:00:00-05:00",
+      "csv": "SPS30-20260308_010000.csv",
+      "index": 15841,
+      "index_text": "0015841",
+      "timestamp": "2026-03-08T01:00:00-05:00",
+      "event": "settling",
+      "values": [
+        1000.0,
+        1000.0,
+        1000.0,
+        1000.0,
+        3000.0,
+        3000.0,
+        3000.0,
+        3000.0,
+        3000.0,
+        10.0
+      ],
+      "values_hex": [
+        "447a0000",
+        "447a0000",
+        "447a0000",
+        "447a0000",
+        "453b8000",
+        "453b8000",
+        "453b8000",
+        "453b8000",
+        "453b8000",
+        "41200000"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260308_010000.csv\",\"index\":\"0015841\",\"timestamp\":\"2026-03-08T01:00:00-05:00\",\"pm1_0\":1000.0,\"pm2_5\":1000.0,\"pm4_0\":1000.0,\"pm10\":1000.0,\"nc0_5\":3000.0,\"nc1_0\":3000.0,\"nc2_5\":3000.0,\"nc4_0\":3000.0,\"nc10\":3000.0,\"typical_size\":10.0,\"event\":\"settling\"}\n"
+    },
+    {
+      "name": "awkward binaries / 2026-01-15T09:30:00-05:00",
+      "csv": "SPS30-20260115_093000.csv",
+      "index": 23758,
+      "index_text": "0023758",
+      "timestamp": "2026-01-15T09:30:00-05:00",
+      "event": "",
+      "values": [
+        0.3333333432674408,
+        0.6666666865348816,
+        0.1428571492433548,
+        9.999999747378752e-06,
+        1.0000001192092896,
+        0.10000000149011612,
+        0.20000000298023224,
+        0.30000001192092896,
+        1000000.0,
+        9.999999350456404e-39
+      ],
+      "values_hex": [
+        "3eaaaaab",
+        "3f2aaaab",
+        "3e124925",
+        "3727c5ac",
+        "3f800001",
+        "3dcccccd",
+        "3e4ccccd",
+        "3e99999a",
+        "49742400",
+        "006ce3ee"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260115_093000.csv\",\"index\":\"0023758\",\"timestamp\":\"2026-01-15T09:30:00-05:00\",\"pm1_0\":0.3333333432674408,\"pm2_5\":0.6666666865348816,\"pm4_0\":0.1428571492433548,\"pm10\":9.999999747378752e-06,\"nc0_5\":1.0000001192092896,\"nc1_0\":0.10000000149011612,\"nc2_5\":0.20000000298023224,\"nc4_0\":0.30000001192092896,\"nc10\":1000000.0,\"typical_size\":9.999999350456404e-39,\"event\":\"\"}\n"
+    },
+    {
+      "name": "awkward binaries / 2026-08-01T15:45:12-04:00",
+      "csv": "SPS30-20260801_154512.csv",
+      "index": 23759,
+      "index_text": "0023759",
+      "timestamp": "2026-08-01T15:45:12-04:00",
+      "event": "settling",
+      "values": [
+        0.3333333432674408,
+        0.6666666865348816,
+        0.1428571492433548,
+        9.999999747378752e-06,
+        1.0000001192092896,
+        0.10000000149011612,
+        0.20000000298023224,
+        0.30000001192092896,
+        1000000.0,
+        9.999999350456404e-39
+      ],
+      "values_hex": [
+        "3eaaaaab",
+        "3f2aaaab",
+        "3e124925",
+        "3727c5ac",
+        "3f800001",
+        "3dcccccd",
+        "3e4ccccd",
+        "3e99999a",
+        "49742400",
+        "006ce3ee"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260801_154512.csv\",\"index\":\"0023759\",\"timestamp\":\"2026-08-01T15:45:12-04:00\",\"pm1_0\":0.3333333432674408,\"pm2_5\":0.6666666865348816,\"pm4_0\":0.1428571492433548,\"pm10\":9.999999747378752e-06,\"nc0_5\":1.0000001192092896,\"nc1_0\":0.10000000149011612,\"nc2_5\":0.20000000298023224,\"nc4_0\":0.30000001192092896,\"nc10\":1000000.0,\"typical_size\":9.999999350456404e-39,\"event\":\"settling\"}\n"
+    },
+    {
+      "name": "awkward binaries / 2026-03-08T01:00:00-05:00",
+      "csv": "SPS30-20260308_010000.csv",
+      "index": 23760,
+      "index_text": "0023760",
+      "timestamp": "2026-03-08T01:00:00-05:00",
+      "event": "startup",
+      "values": [
+        0.3333333432674408,
+        0.6666666865348816,
+        0.1428571492433548,
+        9.999999747378752e-06,
+        1.0000001192092896,
+        0.10000000149011612,
+        0.20000000298023224,
+        0.30000001192092896,
+        1000000.0,
+        9.999999350456404e-39
+      ],
+      "values_hex": [
+        "3eaaaaab",
+        "3f2aaaab",
+        "3e124925",
+        "3727c5ac",
+        "3f800001",
+        "3dcccccd",
+        "3e4ccccd",
+        "3e99999a",
+        "49742400",
+        "006ce3ee"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260308_010000.csv\",\"index\":\"0023760\",\"timestamp\":\"2026-03-08T01:00:00-05:00\",\"pm1_0\":0.3333333432674408,\"pm2_5\":0.6666666865348816,\"pm4_0\":0.1428571492433548,\"pm10\":9.999999747378752e-06,\"nc0_5\":1.0000001192092896,\"nc1_0\":0.10000000149011612,\"nc2_5\":0.20000000298023224,\"nc4_0\":0.30000001192092896,\"nc10\":1000000.0,\"typical_size\":9.999999350456404e-39,\"event\":\"startup\"}\n"
+    },
+    {
+      "name": "integral / 2026-01-15T09:30:00-05:00",
+      "csv": "SPS30-20260115_093000.csv",
+      "index": 31677,
+      "index_text": "0031677",
+      "timestamp": "2026-01-15T09:30:00-05:00",
+      "event": "settling",
+      "values": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0
+      ],
+      "values_hex": [
+        "3f800000",
+        "40000000",
+        "40400000",
+        "40800000",
+        "40a00000",
+        "40c00000",
+        "40e00000",
+        "41000000",
+        "41100000",
+        "41200000"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260115_093000.csv\",\"index\":\"0031677\",\"timestamp\":\"2026-01-15T09:30:00-05:00\",\"pm1_0\":1.0,\"pm2_5\":2.0,\"pm4_0\":3.0,\"pm10\":4.0,\"nc0_5\":5.0,\"nc1_0\":6.0,\"nc2_5\":7.0,\"nc4_0\":8.0,\"nc10\":9.0,\"typical_size\":10.0,\"event\":\"settling\"}\n"
+    },
+    {
+      "name": "integral / 2026-08-01T15:45:12-04:00",
+      "csv": "SPS30-20260801_154512.csv",
+      "index": 31678,
+      "index_text": "0031678",
+      "timestamp": "2026-08-01T15:45:12-04:00",
+      "event": "startup",
+      "values": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0
+      ],
+      "values_hex": [
+        "3f800000",
+        "40000000",
+        "40400000",
+        "40800000",
+        "40a00000",
+        "40c00000",
+        "40e00000",
+        "41000000",
+        "41100000",
+        "41200000"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260801_154512.csv\",\"index\":\"0031678\",\"timestamp\":\"2026-08-01T15:45:12-04:00\",\"pm1_0\":1.0,\"pm2_5\":2.0,\"pm4_0\":3.0,\"pm10\":4.0,\"nc0_5\":5.0,\"nc1_0\":6.0,\"nc2_5\":7.0,\"nc4_0\":8.0,\"nc10\":9.0,\"typical_size\":10.0,\"event\":\"startup\"}\n"
+    },
+    {
+      "name": "integral / 2026-03-08T01:00:00-05:00",
+      "csv": "SPS30-20260308_010000.csv",
+      "index": 31679,
+      "index_text": "0031679",
+      "timestamp": "2026-03-08T01:00:00-05:00",
+      "event": "",
+      "values": [
+        1.0,
+        2.0,
+        3.0,
+        4.0,
+        5.0,
+        6.0,
+        7.0,
+        8.0,
+        9.0,
+        10.0
+      ],
+      "values_hex": [
+        "3f800000",
+        "40000000",
+        "40400000",
+        "40800000",
+        "40a00000",
+        "40c00000",
+        "40e00000",
+        "41000000",
+        "41100000",
+        "41200000"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":\"SPS30-20260308_010000.csv\",\"index\":\"0031679\",\"timestamp\":\"2026-03-08T01:00:00-05:00\",\"pm1_0\":1.0,\"pm2_5\":2.0,\"pm4_0\":3.0,\"pm10\":4.0,\"nc0_5\":5.0,\"nc1_0\":6.0,\"nc2_5\":7.0,\"nc4_0\":8.0,\"nc10\":9.0,\"typical_size\":10.0,\"event\":\"\"}\n"
+    },
+    {
+      "name": "no session yet (csv is null)",
+      "csv": null,
+      "index": 4242,
+      "index_text": "0004242",
+      "timestamp": "2026-08-01T15:45:12-04:00",
+      "event": "",
+      "values": [
+        1.6200000047683716,
+        1.909999966621399,
+        2.0299999713897705,
+        2.109999895095825,
+        10.9399995803833,
+        12.850000381469727,
+        13.109999656677246,
+        13.15999984741211,
+        13.170000076293945,
+        0.6299999952316284
+      ],
+      "values_hex": [
+        "3fcf5c29",
+        "3ff47ae1",
+        "4001eb85",
+        "40070a3d",
+        "412f0a3d",
+        "414d999a",
+        "4151c28f",
+        "41528f5c",
+        "4152b852",
+        "3f2147ae"
+      ],
+      "line": "{\"type\":\"reading\",\"csv\":null,\"index\":\"0004242\",\"timestamp\":\"2026-08-01T15:45:12-04:00\",\"pm1_0\":1.6200000047683716,\"pm2_5\":1.909999966621399,\"pm4_0\":2.0299999713897705,\"pm10\":2.109999895095825,\"nc0_5\":10.9399995803833,\"nc1_0\":12.850000381469727,\"nc2_5\":13.109999656677246,\"nc4_0\":13.15999984741211,\"nc10\":13.170000076293945,\"typical_size\":0.6299999952316284,\"event\":\"\"}\n"
+    }
+  ],
+  "relative_reading": {
+    "csv": "SPS30-R00000356-00001925.csv",
+    "index": 17,
+    "rel_boot": 854,
+    "rel_ms": 21437,
+    "values": [
+      1.6200000047683716,
+      1.909999966621399,
+      2.0299999713897705,
+      2.109999895095825,
+      10.9399995803833,
+      12.850000381469727,
+      13.109999656677246,
+      13.15999984741211,
+      13.170000076293945,
+      0.6299999952316284
+    ],
+    "values_hex": [
+      "3fcf5c29",
+      "3ff47ae1",
+      "4001eb85",
+      "40070a3d",
+      "412f0a3d",
+      "414d999a",
+      "4151c28f",
+      "41528f5c",
+      "4152b852",
+      "3f2147ae"
+    ],
+    "line": "{\"type\":\"reading\",\"csv\":\"SPS30-R00000356-00001925.csv\",\"index\":\"0000017\",\"timestamp\":\"\",\"pm1_0\":1.6200000047683716,\"pm2_5\":1.909999966621399,\"pm4_0\":2.0299999713897705,\"pm10\":2.109999895095825,\"nc0_5\":10.9399995803833,\"nc1_0\":12.850000381469727,\"nc2_5\":13.109999656677246,\"nc4_0\":13.15999984741211,\"nc10\":13.170000076293945,\"typical_size\":0.6299999952316284,\"event\":\"\",\"rel_boot\":854,\"rel_ms\":21437}\n"
+  },
+  "times": [
+    {
+      "name": "winter, EST",
+      "epoch_s": 1768487400,
+      "utc_offset_s": -18000,
+      "utc_offset_min": -300,
+      "iso": "2026-01-15T09:30:00-05:00",
+      "csv": "SPS30-20260115_093000.csv"
+    },
+    {
+      "name": "summer, EDT",
+      "epoch_s": 1785613512,
+      "utc_offset_s": -14400,
+      "utc_offset_min": -240,
+      "iso": "2026-08-01T15:45:12-04:00",
+      "csv": "SPS30-20260801_154512.csv"
+    },
+    {
+      "name": "an hour before spring forward",
+      "epoch_s": 1772949600,
+      "utc_offset_s": -18000,
+      "utc_offset_min": -300,
+      "iso": "2026-03-08T01:00:00-05:00",
+      "csv": "SPS30-20260308_010000.csv"
+    },
+    {
+      "name": "an hour after spring forward",
+      "epoch_s": 1772955000,
+      "utc_offset_s": -14400,
+      "utc_offset_min": -240,
+      "iso": "2026-03-08T03:30:00-04:00",
+      "csv": "SPS30-20260308_033000.csv"
+    },
+    {
+      "name": "the morning of fall back",
+      "epoch_s": 1793520000,
+      "utc_offset_s": -18000,
+      "utc_offset_min": -300,
+      "iso": "2026-11-01T03:00:00-05:00",
+      "csv": "SPS30-20261101_030000.csv"
+    },
+    {
+      "name": "new year's eve, one second to midnight",
+      "epoch_s": 1798779599,
+      "utc_offset_s": -18000,
+      "utc_offset_min": -300,
+      "iso": "2026-12-31T23:59:59-05:00",
+      "csv": "SPS30-20261231_235959.csv"
+    },
+    {
+      "name": "a leap day",
+      "epoch_s": 1709226000,
+      "utc_offset_s": -18000,
+      "utc_offset_min": -300,
+      "iso": "2024-02-29T12:00:00-05:00",
+      "csv": "SPS30-20240229_120000.csv"
+    },
+    {
+      "name": "the epoch, seen from here",
+      "epoch_s": 0,
+      "utc_offset_s": -18000,
+      "utc_offset_min": -300,
+      "iso": "1969-12-31T19:00:00-05:00",
+      "csv": "SPS30-19691231_190000.csv"
+    }
+  ],
+  "indices": [
+    {
+      "index": 0,
+      "expected": "0000000"
+    },
+    {
+      "index": 1,
+      "expected": "0000001"
+    },
+    {
+      "index": 9,
+      "expected": "0000009"
+    },
+    {
+      "index": 10,
+      "expected": "0000010"
+    },
+    {
+      "index": 99,
+      "expected": "0000099"
+    },
+    {
+      "index": 1000,
+      "expected": "0001000"
+    },
+    {
+      "index": 9999999,
+      "expected": "9999999"
+    },
+    {
+      "index": 10000000,
+      "expected": "10000000"
+    },
+    {
+      "index": 4294967295,
+      "expected": "4294967295"
+    }
+  ],
+  "rel_session_names": [
+    {
+      "run": 0,
+      "start_ms": 0,
+      "expected": "SPS30-R00000000-00000000.csv"
+    },
+    {
+      "run": 1,
+      "start_ms": 6437,
+      "expected": "SPS30-R00000001-00001925.csv"
+    },
+    {
+      "run": 854,
+      "start_ms": 3612400,
+      "expected": "SPS30-R00000356-00371EF0.csv"
+    },
+    {
+      "run": 2147483647,
+      "start_ms": 4294967295,
+      "expected": "SPS30-R7FFFFFFF-FFFFFFFF.csv"
+    }
+  ],
+  "page_states": {
+    "empty": 0,
+    "data": 1,
+    "anchor": 2,
+    "bad": 3
+  },
+  "map_sections": {
+    "ring": "ring",
+    "alert_headers": "alert_headers",
+    "alert_bodies": "alert_bodies"
+  },
+  "cells": [
+    {
+      "states": "1023",
+      "cells": "4Q=="
+    },
+    {
+      "states": "3",
+      "cells": "Aw=="
+    },
+    {
+      "states": "11111",
+      "cells": "VQE="
+    },
+    {
+      "states": "0000000",
+      "cells": "AAA="
+    }
+  ],
+  "storage_map": {
+    "small": {
+      "page_bytes": 512,
+      "pages": 20,
+      "sections": [
+        {
+          "id": "ring",
+          "start": 0,
+          "pages": 12,
+          "head": 5,
+          "wraps": 0,
+          "states": "112130000000"
+        },
+        {
+          "id": "alert_headers",
+          "start": 12,
+          "pages": 4,
+          "head": 1,
+          "wraps": 0,
+          "states": "1000"
+        },
+        {
+          "id": "alert_bodies",
+          "start": 16,
+          "pages": 4,
+          "head": 0,
+          "wraps": 0,
+          "states": "0000"
+        }
+      ],
+      "line": "{\"type\":\"storage_map\",\"page_bytes\":512,\"pages\":20,\"sections\":[{\"id\":\"ring\",\"start\":0,\"pages\":12,\"head\":5,\"wraps\":0,\"cells\":\"ZQMA\"},{\"id\":\"alert_headers\",\"start\":12,\"pages\":4,\"head\":1,\"wraps\":0,\"cells\":\"AQ==\"},{\"id\":\"alert_bodies\",\"start\":16,\"pages\":4,\"head\":0,\"wraps\":0,\"cells\":\"AA==\"}]}\n"
+    },
+    "full": {
+      "page_bytes": 512,
+      "pages": 4992,
+      "sections": [
+        {
+          "id": "ring",
+          "start": 0,
+          "pages": 4480,
+          "head": 1200,
+          "wraps": 7,
+          "states": "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111121111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111211111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111112111111111111111111111111111111111111111111111111111111111111110000000011111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111121111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111211111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111112111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111121111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111211111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111311111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111112111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+        },
+        {
+          "id": "alert_headers",
+          "start": 4480,
+          "pages": 128,
+          "head": 9,
+          "wraps": 0,
+          "states": "11111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "id": "alert_bodies",
+          "start": 4608,
+          "pages": 384,
+          "head": 37,
+          "wraps": 0,
+          "states": "111111111111111111111111111111111111100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "line": "{\"type\":\"storage_map\",\"page_bytes\":512,\"pages\":4992,\"sections\":[{\"id\":\"ring\",\"start\":0,\"pages\":4480,\"head\":1200,\"wraps\":7,\"cells\":\"VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVlVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVZVVVVVVVVVVVVVVVVVVVVAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVlVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVZVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVlVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVWVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVdVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVZVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQ==\"},{\"id\":\"alert_headers\",\"start\":4480,\"pages\":128,\"head\":9,\"wraps\":0,\"cells\":\"VVUBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=\"},{\"id\":\"alert_bodies\",\"start\":4608,\"pages\":384,\"head\":37,\"wraps\":0,\"cells\":\"VVVVVVVVVVVVAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\"}]}\n"
+    }
+  },
+  "clean": [
+    {
+      "run_seconds": 0.0,
+      "expected_hours": 168.0,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":168.0}}\n"
+    },
+    {
+      "run_seconds": 1.0,
+      "expected_hours": 168.0,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":168.0}}\n"
+    },
+    {
+      "run_seconds": 359.9,
+      "expected_hours": 167.9,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":167.9}}\n"
+    },
+    {
+      "run_seconds": 360.0,
+      "expected_hours": 167.9,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":167.9}}\n"
+    },
+    {
+      "run_seconds": 3600.0,
+      "expected_hours": 167.0,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":167.0}}\n"
+    },
+    {
+      "run_seconds": 302400.0,
+      "expected_hours": 84.0,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":84.0}}\n"
+    },
+    {
+      "run_seconds": 604799.0,
+      "expected_hours": 0.0,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":0.0}}\n"
+    },
+    {
+      "run_seconds": 604800.0,
+      "expected_hours": 0.0,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":0.0}}\n"
+    },
+    {
+      "run_seconds": 1000000.0,
+      "expected_hours": 0.0,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":0.0}}\n"
+    },
+    {
+      "run_seconds": 1234.5,
+      "expected_hours": 167.7,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":167.7}}\n"
+    },
+    {
+      "run_seconds": "NaN",
+      "expected_hours": 0.0,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":0.0}}\n"
+    },
+    {
+      "run_seconds": "-Infinity",
+      "expected_hours": 0.0,
+      "line": "{\"type\":\"power\",\"power\":{\"source\":\"usb\",\"method\":\"none\",\"clean_due_in_hours\":0.0}}\n"
+    }
+  ],
+  "default_profile": {
+    "mode": "continuous",
+    "interval": 1.0,
+    "cycle_s": 900.0,
+    "warmup_s": 30.0,
+    "average_s": 30.0
+  },
+  "profile_line": "{\"type\":\"profile\",\"profile\":{\"mode\":\"continuous\",\"interval\":1.0,\"cycle_s\":900.0,\"warmup_s\":30.0,\"average_s\":30.0}}\n",
+  "profiles": [
+    {
+      "input": {},
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "mode": "duty_cycle"
+      },
+      "expected": {
+        "mode": "duty_cycle",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "mode": "sabotage"
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "interval": 10.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 10.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "interval": 3600.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 3600.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "interval": 3601.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 3600.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "interval": 1000000000.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 3600.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "interval": 0.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "interval": -5.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "cycle_s": 86400.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 86400.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "cycle_s": 86401.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 86400.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "cycle_s": 86400000.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 86400.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "warmup_s": 1.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 8.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "warmup_s": 400.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 300.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "average_s": 3000.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 300.0
+      }
+    },
+    {
+      "input": {
+        "mode": "duty_cycle",
+        "interval": 1000000000000.0,
+        "cycle_s": 1000000000000.0,
+        "warmup_s": 1000000000000.0,
+        "average_s": 1000000000000.0
+      },
+      "expected": {
+        "mode": "duty_cycle",
+        "interval": 3600.0,
+        "cycle_s": 86400.0,
+        "warmup_s": 300.0,
+        "average_s": 300.0
+      }
+    },
+    {
+      "input": {
+        "cycle_s": 10.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 60.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "interval": "NaN",
+        "cycle_s": "NaN"
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "interval": "Infinity",
+        "cycle_s": "Infinity"
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 3600.0,
+        "cycle_s": 86400.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "interval": "-Infinity"
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    },
+    {
+      "input": {
+        "interval": "not a number",
+        "cycle_s": null
+      },
+      "expected": {
+        "mode": "continuous",
+        "interval": 1.0,
+        "cycle_s": 900.0,
+        "warmup_s": 30.0,
+        "average_s": 30.0
+      }
+    }
+  ],
+  "file_list": {
+    "listing": [
+      {
+        "name": "SPS30-20260802_175923.csv",
+        "rows": 1834,
+        "bytes": 399212,
+        "start": "2026-08-02T17:59:23-04:00"
+      },
+      {
+        "name": "SPS30-20260802_172243.csv",
+        "rows": 41,
+        "bytes": 8923,
+        "start": "2026-08-02T17:22:43-04:00"
+      },
+      {
+        "name": "SPS30-20260801_090000.csv",
+        "rows": 7,
+        "bytes": 1526,
+        "start": "2026-08-01T09:00:00-04:00"
+      }
+    ],
+    "empty": {
+      "offset": 0,
+      "total": 0,
+      "next": null,
+      "line": "{\"type\":\"file_list\",\"files\":[],\"offset\":0,\"total\":0}\n"
+    },
+    "whole": {
+      "offset": 0,
+      "total": 2,
+      "next": null,
+      "line": "{\"type\":\"file_list\",\"files\":[{\"name\":\"SPS30-20260802_175923.csv\",\"rows\":1834,\"bytes\":399212,\"start\":\"2026-08-02T17:59:23-04:00\"},{\"name\":\"SPS30-20260802_172243.csv\",\"rows\":41,\"bytes\":8923,\"start\":\"2026-08-02T17:22:43-04:00\"}],\"offset\":0,\"total\":2}\n"
+    },
+    "page": {
+      "offset": 1,
+      "total": 3,
+      "next": 2,
+      "line": "{\"type\":\"file_list\",\"files\":[{\"name\":\"SPS30-20260802_172243.csv\",\"rows\":41,\"bytes\":8923,\"start\":\"2026-08-02T17:22:43-04:00\"}],\"offset\":1,\"total\":3,\"next\":2}\n"
+    }
+  },
+  "alerts": {
+    "session": "SPS30-20260803_100000.csv",
+    "start": "2026-08-03T11:04:05-04:00",
+    "stop": "2026-08-03T11:05:44-04:00",
+    "default_pm2_5": 20.0,
+    "alerts_line": "{\"type\":\"alerts\",\"ready\":true,\"segments\":7,\"pressure\":0.625,\"rate_floor_s\":60.0,\"wraps\":11,\"thresholds\":{\"pm2_5\":20.0}}\n",
+    "segment_line": "{\"type\":\"alert_segment\",\"seq\":42,\"session\":\"SPS30-20260803_100000.csv\",\"field\":\"pm2_5\",\"threshold\":20.0,\"start\":\"2026-08-03T11:04:05-04:00\",\"stop\":\"2026-08-03T11:05:44-04:00\",\"first\":21.5,\"last\":19.25,\"midpoint\":44.125,\"mean\":33.75,\"variance\":12.5,\"minimum\":18.0,\"maximum\":91.5,\"points\":100,\"first_index\":3745,\"last_index\":3844,\"wrap\":11,\"has_body\":true}\n",
+    "segment_reduced_line": "{\"type\":\"alert_segment\",\"seq\":43,\"session\":\"SPS30-20260803_100000.csv\",\"field\":\"pm2_5\",\"threshold\":20.0,\"start\":\"2026-08-03T11:04:05-04:00\",\"stop\":\"2026-08-03T11:05:44-04:00\",\"first\":21.5,\"last\":19.25,\"midpoint\":44.125,\"mean\":33.75,\"variance\":12.5,\"minimum\":18.0,\"maximum\":91.5,\"points\":100,\"first_index\":3745,\"last_index\":3844,\"wrap\":11,\"has_body\":false}\n",
+    "data_line": "{\"type\":\"alert_data\",\"seq\":42,\"name\":\"SPS30-20260803_100000.csv\",\"columns\":[\"index\",\"timestamp\",\"pm1_0\",\"pm2_5\",\"pm4_0\",\"pm10\",\"nc0_5\",\"nc1_0\",\"nc2_5\",\"nc4_0\",\"nc10\",\"typical_size\",\"event\"],\"rows\":[[\"0003745\",\"2026-08-03T11:04:05-04:00\",\"21.50\",\"44.25\",\"47.00\",\"48.50\",\"100.00\",\"110.50\",\"120.25\",\"130.00\",\"140.75\",\"0.750\",\"\"]],\"done\":true}\n"
+  },
+  "drain": {
+    "kinds": {
+      "body": "body",
+      "segments": "segments",
+      "ring": "ring"
+    },
+    "drain_states": [
+      "idle",
+      "offered",
+      "freed",
+      "kept",
+      "refused",
+      "finished",
+      "error"
+    ],
+    "session": "SPS30-20260803_100000.csv",
+    "timestamp": "2026-08-03T11:04:05-04:00",
+    "start_s": 1785769445,
+    "state_line": "{\"type\":\"drain_state\",\"state\":\"offered\",\"message\":\"\",\"block\":17,\"kind\":\"ring\",\"final\":false,\"rows\":328,\"digest\":\"0a1b2c3d\",\"blocks_left\":461,\"blocks_freed\":99,\"blocks_kept\":0,\"blocks_refused\":0,\"readings_copied\":32472,\"segments_copied\":6,\"readings_freed\":32144}\n",
+    "data_line": "{\"type\":\"drain_data\",\"block\":17,\"kind\":\"ring\",\"columns\":[\"session\",\"index\",\"timestamp\",\"pm1_0\",\"pm2_5\",\"pm4_0\",\"pm10\",\"nc0_5\",\"nc1_0\",\"nc2_5\",\"nc4_0\",\"nc10\",\"typical_size\",\"event\",\"rel_boot\",\"rel_ms\"],\"rows\":[[\"SPS30-20260803_100000.csv\",\"0003745\",\"2026-08-03T11:04:05-04:00\",\"21.50\",\"44.25\",\"47.00\",\"48.50\",\"100.00\",\"110.50\",\"120.25\",\"130.00\",\"140.75\",\"0.750\",\"\",\"\",\"\"],[\"SPS30-R00000007-0012D450.csv\",\"0003746\",\"\",\"21.50\",\"44.25\",\"47.00\",\"48.50\",\"100.00\",\"110.50\",\"120.25\",\"130.00\",\"140.75\",\"0.750\",\"settling\",\"7\",\"1235009\"]],\"done\":true}\n",
+    "segments_line": "{\"type\":\"drain_data\",\"block\":18,\"kind\":\"segments\",\"columns\":[\"seq\",\"session\",\"field\",\"threshold\",\"start_s\",\"stop_s\",\"first\",\"last\",\"midpoint\",\"mean\",\"variance\",\"minimum\",\"maximum\",\"points\",\"first_index\",\"last_index\",\"wrap\",\"has_body\"],\"rows\":[[\"42\",\"SPS30-20260803_100000.csv\",\"pm2_5\",\"20.0\",\"1785769445\",\"1785769544\",\"21.5\",\"19.25\",\"44.125\",\"33.75\",\"12.5\",\"18.0\",\"91.5\",\"100\",\"3745\",\"3844\",\"11\",\"1\"]],\"done\":true}\n"
+  },
+  "raw": {
+    "request_hex": "7e0000020103f97e",
+    "response_hex": "7e00000000ff7e",
+    "stuffed_hex": "7e00d0047d5e7d5d7d317d330c7e",
+    "response_line": "{\"type\":\"raw_response\",\"request\":\"7e0000020103f97e\",\"response\":\"7e00000000ff7e\"}\n"
+  },
+  "time_map": {
+    "boot": 855,
+    "anchors": [
+      {
+        "boot": 854,
+        "rel_ms": 12000,
+        "epoch_ms": 1754170975000,
+        "utc_offset_min": -240
+      },
+      {
+        "boot": 854,
+        "rel_ms": 3612400,
+        "epoch_ms": 1754174575400,
+        "utc_offset_min": -240
+      },
+      {
+        "boot": 855,
+        "rel_ms": 8000,
+        "epoch_ms": 1754180000000,
+        "utc_offset_min": -300
+      }
+    ],
+    "line": "{\"type\":\"time_map\",\"boot\":855,\"anchors\":[{\"boot\":854,\"rel_ms\":12000,\"epoch_ms\":1754170975000,\"utc_offset_min\":-240},{\"boot\":854,\"rel_ms\":3612400,\"epoch_ms\":1754174575400,\"utc_offset_min\":-240},{\"boot\":855,\"rel_ms\":8000,\"epoch_ms\":1754180000000,\"utc_offset_min\":-300}]}\n"
+  }
+}

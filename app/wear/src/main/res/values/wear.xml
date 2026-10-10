@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  What this watch app announces to the phone it is paired with.
+
+  Google Play services collects `android_wear_capabilities` from every installed
+  app on the watch and publishes the union to the paired phone, where
+  `CapabilityClient` can be asked which nodes advertise a given name. That is the
+  platform's own answer to "is my watch app installed over there", and without
+  this file the phone has no way to ask it: a watch with no receiving app looks
+  identical to a watch that is working, which is the exact fault the phone's
+  Watch tab exists to name.
+
+  The name must match `WearContract.CAPABILITY_WATCH_APP` in both modules.
+-->
+<resources>
+    <string-array name="android_wear_capabilities">
+        <item>sps30_watch_app</item>
+    </string-array>
+</resources>
